@@ -105,8 +105,8 @@ export function StatsTab() {
         <div className="stat-card">
           <div className="stat-value">{stats.completed}</div>
           <div className="stat-label">
-            <CheckCircle size={14} style={{ display: 'inline', marginRight: 4 }} />
-            Выполнено
+            <CheckCircle size={14} />
+            <span>Выполнено</span>
           </div>
         </div>
         
@@ -115,8 +115,8 @@ export function StatsTab() {
             {stats.total - stats.completed}
           </div>
           <div className="stat-label">
-            <Circle size={14} style={{ display: 'inline', marginRight: 4 }} />
-            Не выполнено
+            <Circle size={14} />
+            <span>Не выполнено</span>
           </div>
         </div>
         
@@ -133,7 +133,7 @@ export function StatsTab() {
         <div className="stat-card medals">
           <div className="stat-value">{stats.medals.length}</div>
           <div className="stat-label">
-            <Trophy size={14} style={{ display: 'inline', marginRight: 4 }} />
+            <Trophy size={14} />
             Medals
           </div>
         </div>

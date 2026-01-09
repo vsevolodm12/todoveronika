@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { format, addDays, addMonths, subMonths, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, isSameDay, startOfWeek, endOfWeek } from 'date-fns'
 import { ru } from 'date-fns/locale'
 import { X, Bell, ChevronLeft, ChevronRight } from 'lucide-react'
@@ -18,6 +18,28 @@ export function ReminderModal({ isOpen, onClose }: ReminderModalProps) {
   const [minutes, setMinutes] = useState(0)
   const [showCalendar, setShowCalendar] = useState(false)
   const [showTime, setShowTime] = useState(false)
+  const hoursScrollRef = useRef<HTMLDivElement>(null)
+  const minutesScrollRef = useRef<HTMLDivElement>(null)
+
+  // Auto-scroll to selected time when picker opens
+  useEffect(() => {
+    if (showTime) {
+      setTimeout(() => {
+        if (hoursScrollRef.current) {
+          const hourButton = hoursScrollRef.current.children[hours] as HTMLElement
+          if (hourButton) {
+            hourButton.scrollIntoView({ behavior: 'smooth', block: 'center' })
+          }
+        }
+        if (minutesScrollRef.current) {
+          const minuteButton = minutesScrollRef.current.children[minutes] as HTMLElement
+          if (minuteButton) {
+            minuteButton.scrollIntoView({ behavior: 'smooth', block: 'center' })
+          }
+        }
+      }, 100)
+    }
+  }, [showTime, hours, minutes])
 
   if (!isOpen) return null
 
@@ -168,14 +190,21 @@ export function ReminderModal({ isOpen, onClose }: ReminderModalProps) {
               <div className="picker-dropdown time-picker">
                 <div className="time-columns">
                   <div className="time-column">
-                    <span className="time-label">Часы</span>
-                    <div className="time-scroll">
+                    <div className="time-scroll" ref={hoursScrollRef}>
                       {Array.from({ length: 24 }, (_, i) => (
                         <button
                           key={i}
                           type="button"
                           className={`time-option ${hours === i ? 'active' : ''}`}
-                          onClick={() => setHours(i)}
+                          onClick={() => {
+                            setHours(i)
+                            setTimeout(() => {
+                              const optionEl = hoursScrollRef.current?.children[i] as HTMLElement
+                              if (optionEl) {
+                                optionEl.scrollIntoView({ behavior: 'smooth', block: 'center' })
+                              }
+                            }, 50)
+                          }}
                         >
                           {i.toString().padStart(2, '0')}
                         </button>
@@ -183,16 +212,23 @@ export function ReminderModal({ isOpen, onClose }: ReminderModalProps) {
                     </div>
                   </div>
                   <div className="time-column">
-                    <span className="time-label">Минуты</span>
-                    <div className="time-scroll">
-                      {[0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55].map((m) => (
+                    <div className="time-scroll" ref={minutesScrollRef}>
+                      {Array.from({ length: 60 }, (_, i) => (
                         <button
-                          key={m}
+                          key={i}
                           type="button"
-                          className={`time-option ${minutes === m ? 'active' : ''}`}
-                          onClick={() => setMinutes(m)}
+                          className={`time-option ${minutes === i ? 'active' : ''}`}
+                          onClick={() => {
+                            setMinutes(i)
+                            setTimeout(() => {
+                              const optionEl = minutesScrollRef.current?.children[i] as HTMLElement
+                              if (optionEl) {
+                                optionEl.scrollIntoView({ behavior: 'smooth', block: 'center' })
+                              }
+                            }, 50)
+                          }}
                         >
-                          {m.toString().padStart(2, '0')}
+                          {i.toString().padStart(2, '0')}
                         </button>
                       ))}
                     </div>
