@@ -1,6 +1,8 @@
 // API client for backend
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001'
+// API URL - empty string means same origin (production)
+// Set VITE_API_URL=http://localhost:3001 in .env.local for development
+const API_URL = import.meta.env.VITE_API_URL || ''
 
 // User ID - for Telegram Mini App, get from WebApp.initDataUnsafe.user.id
 // For now, hardcoded or from localStorage
