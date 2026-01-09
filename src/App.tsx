@@ -19,11 +19,6 @@ function App() {
   if (loading) {
     return (
       <div className="app">
-        <div className="app-background">
-          <div className="bg-shape bg-shape-1" />
-          <div className="bg-shape bg-shape-2" />
-          <div className="bg-shape bg-shape-3" />
-        </div>
         <div className="loading-screen">
           <div className="loading-spinner" />
           <p>Загрузка...</p>
@@ -35,11 +30,6 @@ function App() {
   if (error) {
     return (
       <div className="app">
-        <div className="app-background">
-          <div className="bg-shape bg-shape-1" />
-          <div className="bg-shape bg-shape-2" />
-          <div className="bg-shape bg-shape-3" />
-        </div>
         <div className="error-screen">
           <p>Ошибка: {error}</p>
           <button onClick={() => window.location.reload()}>Попробовать снова</button>
@@ -50,11 +40,6 @@ function App() {
 
   return (
     <div className="app">
-      <div className="app-background">
-        <div className="bg-shape bg-shape-1" />
-        <div className="bg-shape bg-shape-2" />
-        <div className="bg-shape bg-shape-3" />
-      </div>
       
       <header className="header">
         <h1 className="header-title">Дела Вероники</h1>

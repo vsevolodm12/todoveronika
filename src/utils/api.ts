@@ -4,6 +4,11 @@
 // Set VITE_API_URL=http://localhost:3001 in .env.local for development
 const API_URL = import.meta.env.VITE_API_URL || ''
 
+// Debug: log API URL in development
+if (import.meta.env.DEV) {
+  console.log('[API] API_URL:', API_URL || '(same origin)')
+}
+
 // User ID - for Telegram Mini App, get from WebApp.initDataUnsafe.user.id
 // For now, hardcoded or from localStorage
 function getUserId(): string {
@@ -20,21 +25,30 @@ export function setUserId(id: string) {
 }
 
 async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
-  const resp = await fetch(`${API_URL}${path}`, {
-    ...options,
-    headers: {
-      'Content-Type': 'application/json',
-      'x-user-id': getUserId(),
-      ...options.headers,
-    },
-  })
+  try {
+    const resp = await fetch(`${API_URL}${path}`, {
+      ...options,
+      headers: {
+        'Content-Type': 'application/json',
+        'x-user-id': getUserId(),
+        ...options.headers,
+      },
+    })
 
-  if (!resp.ok) {
-    const err = await resp.json().catch(() => ({ error: 'Unknown error' }))
-    throw new Error(err.error || `HTTP ${resp.status}`)
+    if (!resp.ok) {
+      const err = await resp.json().catch(() => ({ error: 'Unknown error' }))
+      throw new Error(err.error || `HTTP ${resp.status}`)
+    }
+
+    return resp.json()
+  } catch (e) {
+    // Network error or CORS issue
+    if (e instanceof TypeError && e.message.includes('fetch')) {
+      const apiUrl = API_URL || window.location.origin
+      throw new Error(`Не удалось подключиться к серверу (${apiUrl}). Убедитесь, что сервер запущен.`)
+    }
+    throw e
   }
-
-  return resp.json()
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
