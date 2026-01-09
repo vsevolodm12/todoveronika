@@ -1,0 +1,17 @@
+node_modules/
+dist/
+.DS_Store
+
+# Env files (keep secrets out of git)
+.env
+.env.*
+server/.env
+server/.env.*
+
+# SQLite DB
+server/*.db
+server/*.db-journal
+
+# Logs
+*.log
+

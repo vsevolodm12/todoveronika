@@ -1,0 +1,49 @@
+{
+  "parameters": {
+    "aspect_ratio": "2:1 (Cropped UI Screenshot)"
+  },
+  "design_code_dna": {
+    "art_style_engine": {
+      "global_medium": "3D Real-time Game Engine UI",
+      "visual_aesthetic": "Dark Minimalist with Neon Accents / Cyber-grunge",
+      "color_grading": {
+        "dominant_background_hex": "#121216 (Deep Obsidian Black)",
+        "accent_highlight_hex": "#D9FF70 (Acid Lime Neon)",
+        "tonal_contrast": "High contrast; bright emissive elements against a near-black matte surface",
+        "color_temperature": "Neutral-cold UI with a warm orange floor reflection in the background"
+      }
+    },
+    "environment_physics": {
+      "light_source_type": "Digital screen-space emission for UI; ambient warm light from the floor below",
+      "shadow_properties": "No cast shadows on UI; subtle ambient occlusion in the background scene",
+      "special_fx": "Bloom/Glow effect on the lime-green elements; red particle embers in the background",
+      "background_material": "Rough low-poly surface with a satin orange finish (floor)"
+    },
+    "material_fidelity": {
+      "primary_surface_reflection": "Matte UI container with zero specularity; subtle gloss on the background floor",
+      "transparency_and_refraction": "Opaque UI background with slight edge-blurring/anti-aliasing",
+      "micro_texture_details": "Digital noise/grain visible on the dark container surface"
+    },
+    "composition_logic": {
+      "camera_angle": "Straight-on orthographic for UI; low-angle perspective for background world",
+      "framing_scale": "Close-up notification toast",
+      "visual_balance": "Asymmetrical; text-heavy on the left, status progress (1/1) anchored to the right"
+    },
+    "ui_and_graphics_system": {
+      "container_physics": "Solid matte rectangular block",
+      "corner_radius": "0px (Sharp, hard edges)",
+      "graphic_overlays": "Thin horizontal accent bar in the top right corner",
+      "icons_and_symbols": "Minimalist vector checkmark icon"
+    },
+    "typography_dna": {
+      "font_family_feel": "Handwritten / Grunge Sans-serif (Header) and Modern Clean Sans (Body)",
+      "header_formatting": "All-caps, light-weight, condensed handwritten style with irregular stroke widths",
+      "body_text_formatting": "Regular weight, sentence case, high-readability sans-serif in off-white (#E0E0E0)",
+      "typesetting_rules": "Tight leading; wide tracking on the header to enhance the 'sketchy' feel"
+    },
+    "emissive_properties": {
+      "glow_intensity": "Soft glow on the #D9FF70 elements to simulate a neon light effect",
+      "text_luminance": "High luminance for the header to ensure visibility against dark background"
+    }
+  }
+}

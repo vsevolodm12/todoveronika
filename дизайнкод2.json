@@ -1,0 +1,49 @@
+{
+  "parameters": {
+    "aspect_ratio": "1.31:1 (Approx. 4:3)"
+  },
+  "design_code_dna": {
+    "art_style_engine": {
+      "global_medium": "3D Low-Poly Isometric Rendering",
+      "visual_aesthetic": "Synthwave / Cyberpunk Retro-futurism",
+      "color_grading": {
+        "dominant_background_hex": "#2D1B4E (Deep Midnight Violet)",
+        "accent_highlight_hex": "#FF77FF (Neon Magenta) & #FFB84D (Vibrant Amber)",
+        "tonal_contrast": "High contrast between deep purple shadows and luminous emissive elements",
+        "color_temperature": "Cold violet primary palette with hot neon focal points"
+      }
+    },
+    "environment_physics": {
+      "light_source_type": "Diegetic emissive lighting from text and floor strips; soft global ambient top-down light",
+      "shadow_properties": "Soft-edged diffused shadows cast to the upper-right, matching the isometric grid orientation",
+      "special_fx": "Heavy Bloom effect, Volumetric Glow, Screen-space Anti-aliasing",
+      "background_material": "Matte tiled floor with subtle grid lines"
+    },
+    "material_fidelity": {
+      "primary_surface_reflection": "Matte/Diffuse surfaces on 3D geometry; high emission values on light-strips",
+      "transparency_and_refraction": "Opaque low-poly solid objects",
+      "micro_texture_details": "Procedural grid pattern on the floor plane; sharp polygonal edges"
+    },
+    "composition_logic": {
+      "camera_angle": "Isometric (fixed 3/4 top-down perspective)",
+      "framing_scale": "Medium-close fragment of a virtual environment",
+      "visual_balance": "Diagonal hierarchy following the isometric axes; text blocks anchored to world coordinates"
+    },
+    "ui_and_graphics_system": {
+      "container_physics": "Border-less world-space UI (floating text)",
+      "corner_radius": "Sharp 90-degree corners on polygonal geometry",
+      "graphic_overlays": "Glowing directional floor paths; tiled navigation grid",
+      "icons_and_symbols": "None; typography acts as the primary visual signifier"
+    },
+    "typography_dna": {
+      "font_family_feel": "Bold Geometric Sans-Serif; technical and modern vibe",
+      "header_formatting": "All-caps, Extra Bold, Emissive Glow styling",
+      "body_text_formatting": "All-caps, Bold, High-contrast against dark backgrounds",
+      "typesetting_rules": "Tight tracking, left-aligned text blocks, uniform leading"
+    },
+    "emissive_threshold": {
+      "bloom_intensity": "High; text characters bleed into the surrounding pixels to simulate light radiation",
+      "color_saturation": "Hyper-saturated neon tones in the 'hot' areas"
+    }
+  }
+}
