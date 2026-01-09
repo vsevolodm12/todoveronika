@@ -4,24 +4,49 @@ import { Navigation } from './components/Navigation'
 import { TodayTab } from './components/TodayTab'
 import { HistoryTab } from './components/HistoryTab'
 import { StatsTab } from './components/StatsTab'
-import { startReminderChecker } from './utils/reminderChecker'
 
 function App() {
-  const { activeTab, checkPastDaysMedals, reminders, markReminderSent } = useStore()
+  const { activeTab, init, loadReminders, checkPastDaysMedals, loading, error } = useStore()
 
-  // Check and award medals for past days on app load
+  // Initialize - load data from server
   useEffect(() => {
-    checkPastDaysMedals()
-  }, [checkPastDaysMedals])
+    init().then(() => {
+      checkPastDaysMedals()
+      loadReminders()
+    })
+  }, [init, checkPastDaysMedals, loadReminders])
 
-  // Start reminder checker
-  useEffect(() => {
-    const cleanup = startReminderChecker(
-      () => reminders,
-      markReminderSent
+  if (loading) {
+    return (
+      <div className="app">
+        <div className="app-background">
+          <div className="bg-shape bg-shape-1" />
+          <div className="bg-shape bg-shape-2" />
+          <div className="bg-shape bg-shape-3" />
+        </div>
+        <div className="loading-screen">
+          <div className="loading-spinner" />
+          <p>Загрузка...</p>
+        </div>
+      </div>
     )
-    return cleanup
-  }, [reminders, markReminderSent])
+  }
+
+  if (error) {
+    return (
+      <div className="app">
+        <div className="app-background">
+          <div className="bg-shape bg-shape-1" />
+          <div className="bg-shape bg-shape-2" />
+          <div className="bg-shape bg-shape-3" />
+        </div>
+        <div className="error-screen">
+          <p>Ошибка: {error}</p>
+          <button onClick={() => window.location.reload()}>Попробовать снова</button>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="app">

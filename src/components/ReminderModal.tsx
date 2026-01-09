@@ -21,12 +21,12 @@ export function ReminderModal({ isOpen, onClose }: ReminderModalProps) {
 
   if (!isOpen) return null
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (text.trim()) {
       const dateStr = format(selectedDate, 'yyyy-MM-dd')
       const timeStr = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`
-      addReminder(text.trim(), dateStr, timeStr)
+      await addReminder(text.trim(), dateStr, timeStr)
       setText('')
       setSelectedDate(new Date())
       setHours(12)
@@ -218,22 +218,25 @@ export function ReminderModal({ isOpen, onClose }: ReminderModalProps) {
         {pendingReminders.length > 0 && (
           <div className="reminders-list">
             <div className="reminders-list-title">Ожидающие напоминания</div>
-            {pendingReminders.map(reminder => (
-              <div key={reminder.id} className="reminder-item">
-                <div className="reminder-item-content">
-                  <div className="reminder-item-text">{reminder.text}</div>
-                  <div className="reminder-item-time">
-                    {format(new Date(reminder.date), 'd MMM', { locale: ru })} в {reminder.time}
+            {pendingReminders.map(reminder => {
+              const scheduledDate = new Date(reminder.scheduledAt)
+              return (
+                <div key={reminder.id} className="reminder-item">
+                  <div className="reminder-item-content">
+                    <div className="reminder-item-text">{reminder.text}</div>
+                    <div className="reminder-item-time">
+                      {format(scheduledDate, 'd MMM', { locale: ru })} в {format(scheduledDate, 'HH:mm')}
+                    </div>
                   </div>
+                  <button 
+                    className="icon-button danger"
+                    onClick={() => deleteReminder(reminder.id)}
+                  >
+                    <X size={16} />
+                  </button>
                 </div>
-                <button 
-                  className="icon-button danger"
-                  onClick={() => deleteReminder(reminder.id)}
-                >
-                  <X size={16} />
-                </button>
-              </div>
-            ))}
+              )
+            })}
           </div>
         )}
 

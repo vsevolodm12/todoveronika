@@ -1,17 +1,32 @@
+# Dependencies
 node_modules/
+
+# Build output
 dist/
-.DS_Store
 
-# Env files (keep secrets out of git)
+# Environment variables (NEVER commit!)
 .env
-.env.*
-server/.env
-server/.env.*
+.env.local
+.env.*.local
 
-# SQLite DB
-server/*.db
-server/*.db-journal
+# SQLite database
+*.db
+*.db-wal
+*.db-shm
 
 # Logs
 *.log
+npm-debug.log*
 
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Lock files (optional, can keep)
+# package-lock.json
