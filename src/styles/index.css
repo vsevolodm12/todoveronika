@@ -762,7 +762,7 @@ body {
   color: var(--accent-secondary);
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 }
 
 .streak-explanation-text {

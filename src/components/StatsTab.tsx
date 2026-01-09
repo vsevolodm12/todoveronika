@@ -227,7 +227,7 @@ export function StatsTab() {
       {/* Streak explanation */}
       <div className="card" style={{ marginTop: 20 }}>
         <div className="streak-explanation-title">
-          <StreakIcon size={24} />
+          <StreakIcon size={20} />
           Как работает Streak?
         </div>
         <p className="streak-explanation-text">
