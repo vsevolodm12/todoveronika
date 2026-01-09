@@ -1,6 +1,7 @@
 import dotenv from 'dotenv'
 import { fileURLToPath } from 'url'
 import { dirname, join } from 'path'
+import { existsSync } from 'fs'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
@@ -16,10 +17,28 @@ const PORT = process.env.PORT || 3001
 const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN
 const CHAT_ID = process.env.TELEGRAM_CHAT_ID
 const ALLOWED_USERS = (process.env.ALLOWED_USER_IDS || '').split(',').map(s => s.trim()).filter(Boolean)
+const FRONTEND_URL = process.env.FRONTEND_URL || '*'
 
 const app = express()
-app.use(cors())
+
+// CORS - in production, restrict to your frontend domain
+app.use(cors({
+  origin: FRONTEND_URL === '*' ? true : FRONTEND_URL.split(','),
+  credentials: true,
+}))
+
 app.use(express.json())
+
+// Health check endpoint (for deployment platforms)
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok', timestamp: Date.now() })
+})
+
+// Serve static frontend files in production
+const distPath = join(__dirname, '..', 'dist')
+if (existsSync(distPath)) {
+  app.use(express.static(distPath))
+}
 
 const db = openDb()
 
@@ -258,13 +277,29 @@ app.delete('/api/reminders/:id', (req, res) => {
 })
 
 // ─────────────────────────────────────────────────────────────────────────────
+// SPA FALLBACK (for frontend routing)
+// ─────────────────────────────────────────────────────────────────────────────
+
+// Serve index.html for all non-API routes (SPA support)
+if (existsSync(distPath)) {
+  app.get('*', (req, res) => {
+    // Don't serve index.html for API routes
+    if (req.path.startsWith('/api')) {
+      return res.status(404).json({ error: 'Not found' })
+    }
+    res.sendFile(join(distPath, 'index.html'))
+  })
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // START
 // ─────────────────────────────────────────────────────────────────────────────
 
 startReminderScheduler({ db, botToken: BOT_TOKEN, chatId: CHAT_ID })
 
-app.listen(PORT, () => {
-  console.log(`[server] listening on http://localhost:${PORT}`)
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`[server] listening on http://0.0.0.0:${PORT}`)
   console.log(`[server] allowed users: ${ALLOWED_USERS.length ? ALLOWED_USERS.join(', ') : '(any)'}`)
+  console.log(`[server] telegram configured: ${BOT_TOKEN ? 'yes' : 'NO'}`)
 })
 
