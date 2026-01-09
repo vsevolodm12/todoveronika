@@ -202,7 +202,8 @@ body {
   border-bottom: 2px dashed var(--accent-primary);
   outline: none;
   padding: 4px 0;
-  width: 200px;
+  flex: 1;
+  min-width: 0;
 }
 
 .block-actions {
@@ -1574,8 +1575,8 @@ body {
   
   .block-title-input {
     font-size: 1.2rem;
-    width: 100%;
-    max-width: 200px;
+    flex: 1;
+    min-width: 0;
   }
   
   /* Tasks */
