@@ -44,7 +44,8 @@ const db = openDb()
 
 // Simple auth middleware - check user_id header
 function authMiddleware(req, res, next) {
-  const userId = req.headers['x-user-id']
+  console.log("[auth] checking user:", req.headers["x-user-id"], "allowed:", ALLOWED_USERS)
+  const userId = (req.headers['x-user-id'] || '').trim()
   if (!userId) {
     return res.status(401).json({ error: 'Missing x-user-id header' })
   }
@@ -295,7 +296,7 @@ if (existsSync(distPath)) {
 // START
 // ─────────────────────────────────────────────────────────────────────────────
 
-startReminderScheduler({ db, botToken: BOT_TOKEN, chatId: CHAT_ID })
+startReminderScheduler({ db, botToken: BOT_TOKEN, chatId: CHAT_ID, allowedUsers: ALLOWED_USERS })
 
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`[server] listening on http://0.0.0.0:${PORT}`)

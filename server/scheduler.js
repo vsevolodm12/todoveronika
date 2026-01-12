@@ -1,8 +1,13 @@
 import { sendTelegramMessage } from './telegram.js'
 
-export function startReminderScheduler({ db, botToken, chatId }) {
-  if (!botToken || !chatId) {
+export function startReminderScheduler({ db, botToken, chatId, allowedUsers }) {
+  if (!botToken) {
     console.log('[scheduler] Telegram not configured; reminders will not be sent.')
+    return () => {}
+  }
+
+  if (!allowedUsers || allowedUsers.length === 0) {
+    console.log('[scheduler] No allowed users configured; reminders will not be sent.')
     return () => {}
   }
 
@@ -24,16 +29,26 @@ export function startReminderScheduler({ db, botToken, chatId }) {
     if (!due.length) return
 
     for (const r of due) {
-      try {
-        // NOTE: we keep it simple: all reminders go to one chat id (your case).
-        await sendTelegramMessage({
-          botToken,
-          chatId,
-          text: `🔔 Напоминание\n\n${r.text}`,
-        })
+      let allSent = true
+      
+      // Отправляем напоминание ВСЕМ разрешенным пользователям
+      for (const userId of allowedUsers) {
+        try {
+          await sendTelegramMessage({
+            botToken,
+            chatId: userId,
+            text: `🔔 Напоминание\n\n${r.text}`,
+          })
+          console.log(`[scheduler] sent reminder ${r.reminder_id} to user ${userId}`)
+        } catch (e) {
+          console.error('[scheduler] failed to send reminder', r.reminder_id, 'to user', userId, e?.message || e)
+          allSent = false
+        }
+      }
+      
+      // Помечаем как отправленное только если отправлено всем
+      if (allSent) {
         markSentStmt.run(Date.now(), r.user_id, r.reminder_id)
-      } catch (e) {
-        console.error('[scheduler] failed to send reminder', r.reminder_id, e?.message || e)
       }
     }
   }
@@ -48,5 +63,3 @@ export function startReminderScheduler({ db, botToken, chatId }) {
 
   return () => clearInterval(intervalId)
 }
-
-
